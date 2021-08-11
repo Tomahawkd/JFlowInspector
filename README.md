@@ -5,7 +5,7 @@ features to CSV file.
 ## History
 Inspired by [CICFlowMeter](https://github.com/ahlashkari/CICFlowMeter), the project originally
 is forked to [CICFlowMeter Mk.6](https://github.com/Tomahawkd/CICFlowMeter-Mk.6). After a massive
-code refactor, CICFlowMeter Mk.6 is able to use to extract more features, not only the TCP features
+code refactor, CICFlowMeter Mk.6 is able to extract more features, not only the TCP features
 but also HTTP features.
 
 To read HTTP data from TCP stream, CICFlowMeter Mk.6 is refactored again to add the ability to 
@@ -20,7 +20,8 @@ CICFlowMeter and CICFlowMeter Mk.6.
 
 ## Prerequisite
 1. Java 8
-2. jnetpcap native library and use `-Djava.library.path` to link native library with jar.
+2. jnetpcap native library and use `-Djava.library.path` to link native library with jar (you can find
+   it in `./lib/jnetpcap` or download it from [original project](https://sourceforge.net/projects/jnetpcap/)).
 
 Note:
 Highly recommended allocating JFlowInspector with larger memory using `-Xmx` if you are about to
