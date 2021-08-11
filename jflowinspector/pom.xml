@@ -108,7 +108,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>io.tomahawkd.flowinspector.Main</mainClass>
+                                    <mainClass>io.tomahawkd.jflowinspector.Main</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
