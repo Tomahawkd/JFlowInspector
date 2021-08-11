@@ -1,8 +1,8 @@
 package io.tomahawkd.jflowinspector.file.pcapng;
 
 import io.kaitai.struct.KaitaiStream;
-import io.tomahawkd.jflowinspector.file.data.Ipv4Packet;
-import io.tomahawkd.jflowinspector.file.data.TcpSegment;
+import io.tomahawkd.jflowinspector.file.protocols.ipv4.Ipv4Packet;
+import io.tomahawkd.jflowinspector.file.protocols.tcp.TcpSegment;
 import io.tomahawkd.jflowinspector.file.protocols.ether.EthernetFrame;
 import io.tomahawkd.jflowinspector.file.PcapPacket;
 

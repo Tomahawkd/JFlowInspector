@@ -1,6 +1,6 @@
 package io.tomahawkd.jflowinspector.file.jnetpcap;
 
-import io.tomahawkd.jflowinspector.file.data.TcpSegment;
+import io.tomahawkd.jflowinspector.file.protocols.tcp.TcpSegment;
 import org.jnetpcap.protocol.tcpip.Tcp;
 
 public class TcpSegmentAdapter implements TcpSegment {

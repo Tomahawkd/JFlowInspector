@@ -3,7 +3,6 @@ package io.tomahawkd.jflowinspector.file.protocols.ipv4;
 import io.kaitai.struct.ByteBufferKaitaiStream;
 import io.kaitai.struct.KaitaiStream;
 import io.kaitai.struct.KaitaiStruct;
-import io.tomahawkd.jflowinspector.file.data.Ipv4Packet;
 import io.tomahawkd.jflowinspector.file.protocols.tcp.TcpSegmentImpl;
 
 public class Ipv4PacketImpl extends KaitaiStruct implements Ipv4Packet {

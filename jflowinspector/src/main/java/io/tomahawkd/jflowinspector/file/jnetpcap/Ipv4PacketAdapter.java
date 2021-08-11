@@ -1,6 +1,6 @@
 package io.tomahawkd.jflowinspector.file.jnetpcap;
 
-import io.tomahawkd.jflowinspector.file.data.Ipv4Packet;
+import io.tomahawkd.jflowinspector.file.protocols.ipv4.Ipv4Packet;
 import org.jnetpcap.protocol.network.Ip4;
 
 public class Ipv4PacketAdapter implements Ipv4Packet {

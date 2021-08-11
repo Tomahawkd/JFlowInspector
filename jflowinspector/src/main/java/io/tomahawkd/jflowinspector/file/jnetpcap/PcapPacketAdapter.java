@@ -1,7 +1,7 @@
 package io.tomahawkd.jflowinspector.file.jnetpcap;
 
-import io.tomahawkd.jflowinspector.file.data.Ipv4Packet;
-import io.tomahawkd.jflowinspector.file.data.TcpSegment;
+import io.tomahawkd.jflowinspector.file.protocols.ipv4.Ipv4Packet;
+import io.tomahawkd.jflowinspector.file.protocols.tcp.TcpSegment;
 import io.tomahawkd.jflowinspector.file.PcapPacket;
 import org.jnetpcap.protocol.lan.Ethernet;
 import org.jnetpcap.protocol.network.Ip4;

@@ -1,6 +1,6 @@
 package io.tomahawkd.jflowinspector.packet;
 
-import io.tomahawkd.jflowinspector.file.data.TcpSegment;
+import io.tomahawkd.jflowinspector.file.protocols.tcp.TcpSegment;
 import io.tomahawkd.jflowinspector.file.PcapPacket;
 
 @Layer(LayerType.TRANSPORT)

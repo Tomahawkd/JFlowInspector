@@ -1,6 +1,6 @@
 package io.tomahawkd.jflowinspector.packet;
 
-import io.tomahawkd.jflowinspector.file.data.Ipv4Packet;
+import io.tomahawkd.jflowinspector.file.protocols.ipv4.Ipv4Packet;
 import io.tomahawkd.jflowinspector.file.PcapPacket;
 
 @Layer(LayerType.INTERNET)

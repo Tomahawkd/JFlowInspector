@@ -1,4 +1,4 @@
-package io.tomahawkd.jflowinspector.file.data;
+package io.tomahawkd.jflowinspector.file.protocols.ipv4;
 
 public interface Ipv4Packet {
 

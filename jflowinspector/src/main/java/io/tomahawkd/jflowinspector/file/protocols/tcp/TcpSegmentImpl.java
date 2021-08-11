@@ -4,7 +4,6 @@ package io.tomahawkd.jflowinspector.file.protocols.tcp;
 
 import io.kaitai.struct.KaitaiStream;
 import io.kaitai.struct.KaitaiStruct;
-import io.tomahawkd.jflowinspector.file.data.TcpSegment;
 
 
 /**
