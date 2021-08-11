@@ -1,6 +1,6 @@
 package io.tomahawkd.jflowinspector.packet;
 
-import io.tomahawkd.jflowinspector.pcap.parse.PcapPacket;
+import io.tomahawkd.jflowinspector.file.PcapPacket;
 import org.apache.commons.lang3.ArrayUtils;
 
 @Layer(LayerType.APPLICATION)

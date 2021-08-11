@@ -1,7 +1,7 @@
 package io.tomahawkd.jflowinspector.packet;
 
-import io.tomahawkd.jflowinspector.pcap.data.Ipv4Packet;
-import io.tomahawkd.jflowinspector.pcap.parse.PcapPacket;
+import io.tomahawkd.jflowinspector.file.data.Ipv4Packet;
+import io.tomahawkd.jflowinspector.file.PcapPacket;
 
 @Layer(LayerType.INTERNET)
 public class Ipv4PacketDelegate implements PacketDelegate {

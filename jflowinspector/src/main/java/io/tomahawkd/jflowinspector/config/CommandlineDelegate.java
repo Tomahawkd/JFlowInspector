@@ -3,7 +3,7 @@ package io.tomahawkd.jflowinspector.config;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import io.tomahawkd.jflowinspector.execute.ExecutionMode;
-import io.tomahawkd.jflowinspector.pcap.PcapFileReaderProvider;
+import io.tomahawkd.jflowinspector.file.PcapFileReaderProvider;
 import io.tomahawkd.jflowinspector.source.LocalFile;
 import io.tomahawkd.jflowinspector.source.LocalMultiFile;
 import io.tomahawkd.jflowinspector.source.LocalSingleFile;

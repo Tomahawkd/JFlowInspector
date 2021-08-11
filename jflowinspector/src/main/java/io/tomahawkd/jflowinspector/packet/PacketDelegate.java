@@ -1,7 +1,7 @@
 package io.tomahawkd.jflowinspector.packet;
 
 
-import io.tomahawkd.jflowinspector.pcap.parse.PcapPacket;
+import io.tomahawkd.jflowinspector.file.PcapPacket;
 
 public interface PacketDelegate {
 

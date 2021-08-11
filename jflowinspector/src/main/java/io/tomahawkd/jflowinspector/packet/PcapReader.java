@@ -1,8 +1,8 @@
 package io.tomahawkd.jflowinspector.packet;
 
-import io.tomahawkd.jflowinspector.pcap.PcapFileReaderProvider;
-import io.tomahawkd.jflowinspector.pcap.parse.PcapFileReader;
-import io.tomahawkd.jflowinspector.pcap.parse.PcapPacket;
+import io.tomahawkd.jflowinspector.file.PcapFileReaderProvider;
+import io.tomahawkd.jflowinspector.file.PcapFileReader;
+import io.tomahawkd.jflowinspector.file.PcapPacket;
 import io.tomahawkd.jflowinspector.util.IdGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

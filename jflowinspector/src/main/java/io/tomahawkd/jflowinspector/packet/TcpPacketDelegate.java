@@ -1,7 +1,7 @@
 package io.tomahawkd.jflowinspector.packet;
 
-import io.tomahawkd.jflowinspector.pcap.data.TcpSegment;
-import io.tomahawkd.jflowinspector.pcap.parse.PcapPacket;
+import io.tomahawkd.jflowinspector.file.data.TcpSegment;
+import io.tomahawkd.jflowinspector.file.PcapPacket;
 
 @Layer(LayerType.TRANSPORT)
 public class TcpPacketDelegate implements PacketDelegate {
