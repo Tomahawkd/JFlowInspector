@@ -41,13 +41,11 @@ public class Packet extends KaitaiStruct implements PcapPacket {
      */
     private EthernetFrame body = null;
 
-    private final Pcap _root;
     private final Pcap _parent;
 
-    public Packet(KaitaiStream _io, Pcap _parent, Pcap _root) {
+    public Packet(KaitaiStream _io, Pcap _parent) {
         super(_io);
         this._parent = _parent;
-        this._root = _root;
         _read();
     }
 
@@ -56,9 +54,9 @@ public class Packet extends KaitaiStruct implements PcapPacket {
         this.tsUsec = this._io.readU4le();
         this.inclLen = this._io.readU4le();
         this.origLen = this._io.readU4le();
-        LinkType on = _root.hdr().network();
+        LinkType on = _parent.hdr().network();
         if (on != null) {
-            if (_root.hdr().network() == LinkType.ETHERNET) {
+            if (_parent.hdr().network() == LinkType.ETHERNET) {
                 byte[] _raw_body = this._io.readBytes(inclLen());
                 KaitaiStream _io__raw_body = new ByteBufferKaitaiStream(_raw_body);
                 this.body = new EthernetFrame(_io__raw_body);

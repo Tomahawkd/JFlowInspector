@@ -26,17 +26,15 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
     private int urgentPointer;
     private byte[] optionsAndPaddings;
     private byte[] body;
-    private final TcpSegmentImpl _root;
     private final KaitaiStruct _parent;
 
     public TcpSegmentImpl(KaitaiStream _io) {
-        this(_io, null, null);
+        this(_io, null);
     }
 
-    public TcpSegmentImpl(KaitaiStream _io, KaitaiStruct _parent, TcpSegmentImpl _root) {
+    public TcpSegmentImpl(KaitaiStream _io, KaitaiStruct _parent) {
         super(_io);
         this._parent = _parent;
-        this._root = _root == null ? this : _root;
         _read();
     }
 
@@ -174,10 +172,6 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
     @Override
     public int payloadLength() {
         return body.length;
-    }
-
-    public TcpSegmentImpl _root() {
-        return _root;
     }
 
     public KaitaiStruct _parent() {

@@ -1,4 +1,4 @@
-package io.tomahawkd.jflowinspector.file.protocols.ip;
+package io.tomahawkd.jflowinspector.file.protocols.ipv4;
 
 import java.util.HashMap;
 import java.util.Map;
