@@ -14,7 +14,7 @@ public class FlowGenerator {
     public static final Logger logger = LogManager.getLogger(FlowGenerator.class);
 
     private final List<FlowGenListener> listeners;
-    private LabelStrategy labelStrategy = f -> "No Label";
+    private LabelStrategy labelStrategy = LabelStrategy.DEFAULT;
     private final HashMap<String, Flow> currentFlows;
 
     private final long flowTimeOut;
