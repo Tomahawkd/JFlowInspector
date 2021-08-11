@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>jflowinspector</artifactId>
-    <version>${cicversion}</version>
+    <version>${inspector.version}</version>
     <name>jflowinspector</name>
 
     <packaging>jar</packaging>
