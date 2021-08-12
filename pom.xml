@@ -7,7 +7,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <inspector.version>0.7.1</inspector.version>
+        <inspector.version>0.7.2</inspector.version>
         <bin.directory>bin</bin.directory>
     </properties>
 
