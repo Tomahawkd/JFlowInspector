@@ -96,6 +96,14 @@ public class TcpSegmentAdapter implements TcpSegment {
         return tcp.window();
     }
 
+    /**
+     * Always return 6. {@link Tcp#windowScaled()}
+     */
+    @Override
+    public int windowScaler() {
+        return 6;
+    }
+
     @Override
     public int checksum() {
         return tcp.checksum();

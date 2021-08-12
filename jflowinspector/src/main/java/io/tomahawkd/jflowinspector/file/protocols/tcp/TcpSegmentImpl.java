@@ -5,6 +5,7 @@ package io.tomahawkd.jflowinspector.file.protocols.tcp;
 import io.kaitai.struct.ByteBufferKaitaiStream;
 import io.kaitai.struct.KaitaiStream;
 import io.kaitai.struct.KaitaiStruct;
+import io.tomahawkd.jflowinspector.file.protocols.tcp.option.WindowScaleOption;
 
 
 /**
@@ -25,6 +26,7 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
     private int checksum;
     private int urgentPointer;
     private TcpOptionList options;
+    private int windowScaler = 1;
     private byte[] body;
     private final KaitaiStruct _parent;
 
@@ -62,6 +64,8 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
         if (offset > 5) {
             byte[] optionsAndPaddings = this._io.readBytes((offset - 5) * 4L);
             this.options = new TcpOptionList(new ByteBufferKaitaiStream(optionsAndPaddings));
+            WindowScaleOption wso = this.options.getOptionByType(WindowScaleOption.class);
+            if (wso != null) this.windowScaler = wso.scale();
         }
         this.body = this._io.readBytesFull();
     }
@@ -149,6 +153,11 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
     @Override
     public int window() {
         return windowSize;
+    }
+
+    @Override
+    public int windowScaler() {
+        return windowScaler;
     }
 
     @Override

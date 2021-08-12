@@ -27,6 +27,8 @@ public interface TcpSegment {
 
     int window();
 
+    int windowScaler();
+
     int checksum();
 
     int urgentPointer();
