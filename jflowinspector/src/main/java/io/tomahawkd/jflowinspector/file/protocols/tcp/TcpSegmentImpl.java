@@ -2,6 +2,7 @@ package io.tomahawkd.jflowinspector.file.protocols.tcp;
 
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+import io.kaitai.struct.ByteBufferKaitaiStream;
 import io.kaitai.struct.KaitaiStream;
 import io.kaitai.struct.KaitaiStruct;
 
@@ -23,7 +24,7 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
     private int windowSize;
     private int checksum;
     private int urgentPointer;
-    private byte[] optionsAndPaddings;
+    private TcpOptionList options;
     private byte[] body;
     private final KaitaiStruct _parent;
 
@@ -59,7 +60,8 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
         this.urgentPointer = this._io.readU2be();
         // the first 5 lines (32 bits/4 bytes per line) are mandatory
         if (offset > 5) {
-            this.optionsAndPaddings = this._io.readBytes((offset - 5) * 4L);
+            byte[] optionsAndPaddings = this._io.readBytes((offset - 5) * 4L);
+            this.options = new TcpOptionList(new ByteBufferKaitaiStream(optionsAndPaddings));
         }
         this.body = this._io.readBytesFull();
     }
@@ -159,8 +161,8 @@ public class TcpSegmentImpl extends KaitaiStruct implements TcpSegment {
         return urgentPointer;
     }
 
-    public byte[] optionsAndPaddings() {
-        return optionsAndPaddings;
+    public TcpOptionList options() {
+        return options;
     }
 
     @Override

@@ -4,10 +4,11 @@ import io.kaitai.struct.KaitaiStream;
 import io.kaitai.struct.KaitaiStruct;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Ipv4OptionList extends KaitaiStruct {
 
-    private ArrayList<Ipv4Option> entries;
+    private List<Ipv4Option> entries;
     private final Ipv4PacketImpl _parent;
 
     public Ipv4OptionList(KaitaiStream _io, Ipv4PacketImpl _parent) {
@@ -23,7 +24,7 @@ public class Ipv4OptionList extends KaitaiStruct {
         }
     }
 
-    public ArrayList<Ipv4Option> entries() {
+    public List<Ipv4Option> entries() {
         return entries;
     }
 
