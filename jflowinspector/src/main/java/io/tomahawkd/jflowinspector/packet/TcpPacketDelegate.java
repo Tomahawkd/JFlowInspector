@@ -13,6 +13,7 @@ public class TcpPacketDelegate implements PacketDelegate {
         dst.addFeature(MetaFeature.SRC_PORT, tcp.srcPort());
         dst.addFeature(MetaFeature.DST_PORT, tcp.dstPort());
         dst.addFeature(Feature.TCP_WINDOW, tcp.window());
+        dst.addFeature(Feature.WINDOW_SCALE, tcp.windowScaler());
         dst.addFeature(Feature.FLAG, tcp.flags());
         dst.addFeature(MetaFeature.PAYLOAD_LEN, tcp.payloadLength());
         dst.addFeature(MetaFeature.HEADER_LEN, tcp.headerLength());
@@ -24,7 +25,8 @@ public class TcpPacketDelegate implements PacketDelegate {
     }
 
     public enum Feature implements PacketFeature {
-        TCP_WINDOW(Integer.class), FLAG(Integer.class), SEQ(Long.class), ACK(Long.class);
+        TCP_WINDOW(Integer.class), FLAG(Integer.class), SEQ(Long.class), ACK(Long.class),
+        WINDOW_SCALE(Integer.class);
 
         private final Class<?> type;
 
