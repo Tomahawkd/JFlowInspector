@@ -13,6 +13,9 @@ public class Flow implements FlowFeature {
     // features
     private final List<FlowFeature> features;
 
+    private FlowStatus status;
+    private int finStatus;
+
     private Flow() {
         this.features = new ArrayList<>();
         features.add(new FlowBasicFeature(
@@ -147,5 +150,42 @@ public class Flow implements FlowFeature {
 
     public final FlowBasicFeature getBasicInfo() {
         return getDep(FlowBasicFeature.class);
+    }
+
+    public FlowStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(FlowStatus status) {
+        this.status = status;
+    }
+
+    public int getFinStatus() {
+        return finStatus;
+    }
+
+    /**
+     * <p>The fin status bits is record as follows:</p>
+     *
+     *  <p>0_0_0_0</p>
+     *  <p>3 2 1 0</p>
+     *
+     * <p>0: src FIN was seen</p>
+     * <p>1: src FIN was ACKed</p>
+     * <p>2: dst FIN was seen</p>
+     * <p>3: dst FIN was ACKed</p>
+     */
+    public static final int SRC_FIN_SEE = 0b0001;
+    public static final int SRC_FIN_ACK = 0b0010;
+    public static final int DST_FIN_SEE = 0b0100;
+    public static final int DST_FIN_ACK = 0b1000;
+    public static final int ALL = 0b1111;
+
+    public void setFinStatusAt(int mask) {
+        finStatus = finStatus | mask;
+    }
+
+    public boolean getFinStatusAt(int mask) {
+        return (finStatus & mask) == mask;
     }
 }
