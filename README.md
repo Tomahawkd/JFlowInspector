@@ -37,9 +37,10 @@ Note:
 3. For more information about jnetpcap, please follow the [link](https://sourceforge.net/projects/jnetpcap/).
 4. The tool will generate tons of logs while running, use `--quiet` to stop this.
 
-# Developing Note
-Since this project is still at early development, internal structure, behaviour 
-may vary in different version.
+## Developing Note
+Since this project is still at early development, and it is still under my 
+graduate project, internal structure, behaviour may vary and limit 
+in different version.
 
 ## Commandline Help
 ```
