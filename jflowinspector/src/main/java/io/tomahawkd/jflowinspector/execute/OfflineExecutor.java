@@ -13,6 +13,7 @@ import io.tomahawkd.jflowinspector.source.LocalMultiFile;
 import io.tomahawkd.jflowinspector.source.LocalSingleFile;
 import io.tomahawkd.jflowinspector.thread.PacketDispatcher;
 import io.tomahawkd.jflowinspector.thread.SimplePacketDispatcher;
+import io.tomahawkd.jflowinspector.util.SimpleWriter;
 import io.tomahawkd.jflowinspector.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,6 +71,7 @@ public class OfflineExecutor extends AbstractExecutor {
         System.out.printf("Working on... %s%n", fileName);
 
         // setting up
+        SimpleWriter writer = new SimpleWriter(outputPath);
         LabelStrategy strategy = LabelStrategyFactoryManager.get().getStrategy(inputFile);
         SimplePacketDispatcher dispatcher =
                 new SimplePacketDispatcher(delegate.getFlowThreadCount(), delegate.getFlowQueueSize(), () -> {
@@ -79,7 +81,13 @@ public class OfflineExecutor extends AbstractExecutor {
             flowGen.setFlowLabelSupplier(strategy);
 
             // data export
-            flowGen.addFlowListener(flow -> Utils.insertToFile(flow.exportData(), outputPath));
+            flowGen.addFlowListener(flow -> {
+                try {
+                    writer.write(flow.exportData());
+                } catch (IOException e) {
+                    logger.error("IO Exception while writing data", e);
+                }
+            });
             return flowGen;
         });
 
@@ -108,6 +116,12 @@ public class OfflineExecutor extends AbstractExecutor {
             dispatcher.stop();
             dispatcher.forceStop();
             throw e;
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                logger.error("Writer close with error", e);
+            }
         }
     }
 
@@ -128,6 +142,9 @@ public class OfflineExecutor extends AbstractExecutor {
                 System.out.printf("%s -> Total: %d,Valid: %d,Discarded: %d, %d flows \r",
                         filePath.getFileName(), nTotal, nValid, nInvalid, dispatcher.getFlowCount());
             } catch (EOFException e) {
+                break;
+            } catch (InterruptedException e) {
+                logger.error("Waiting thread is interrupted.", e);
                 break;
             }
         }
