@@ -178,7 +178,8 @@ public class FlowGenerator {
 
     public void dumpLabeledCurrentFlow() {
         // treat the left flows as completed
-        currentFlows.values().forEach(this::callback);
+        List<String> ids = new ArrayList<>(currentFlows.keySet());
+        ids.forEach(id -> finishFlow(id, "EOF"));
     }
 
     private void flushTimeoutFlows(long timestamp) {
@@ -203,10 +204,6 @@ public class FlowGenerator {
         logger.debug("Current flow count: {}", currentFlows.size());
         Flow flow = currentFlows.remove(id);
         flow.finalizeFlow();
-        callback(flow);
-    }
-
-    private void callback(Flow flow) {
         if (!flow.isHttp()) return;
         flowCount++;
         listeners.forEach(l -> l.onFlowGenerated(flow));
