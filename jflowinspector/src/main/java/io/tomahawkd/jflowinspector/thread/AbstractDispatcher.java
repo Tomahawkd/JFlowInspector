@@ -61,7 +61,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
     }
 
     public void waitForWorker(DispatchWorker worker) {
-        while (worker.getWorkload() > queueSize) {
+        while (worker.getQueueSize() > queueSize) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -82,7 +82,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
                 throw new RuntimeException("No worker candidate.");
             }
 
-        } while (worker.getWorkload() > queueSize);
+        } while (worker.getQueueSize() > queueSize);
 
         logger.debug("Acquire worker {} with workload {}", worker.getClass(), worker.getWorkload());
         return worker;
