@@ -12,6 +12,8 @@ public interface DispatchFlowWorker extends DispatchWorker {
 
     long getFlowCount();
 
+    void updateTimestamp(long ts);
+
     void run();
 
     void close();

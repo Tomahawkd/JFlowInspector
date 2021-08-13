@@ -20,17 +20,21 @@ public class SimplePacketDispatcher extends AbstractDispatcher implements Packet
         if (!this.working) return;
 
         // flow is processing
+        DispatchFlowWorker pending = null;
         for (DispatchWorker e : workers) {
             DispatchFlowWorker worker = (DispatchFlowWorker) e;
-            if (worker.containsFlow(info)) {
-                waitForWorker(worker);
-                worker.accept(info);
-                return;
+            worker.updateTimestamp(info.getTimestamp());
+            if (pending == null && worker.containsFlow(info)) {
+                pending = worker;
             }
         }
 
         // new flow
-        ((DispatchFlowWorker) getLowestWorkloadWorker()).accept(info);
+        if (pending == null) {
+            pending = (DispatchFlowWorker) getLowestWorkloadWorker();
+        }
+
+        pending.accept(info);
     }
 
     public long getFlowCount() {

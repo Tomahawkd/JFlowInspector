@@ -26,6 +26,8 @@ public class FlowGenerator {
 
     private long flowCount = 0;
 
+    private long currentTimestamp;
+
     public FlowGenerator(long flowTimeout, long activityTimeout, ExecutionMode mode) {
         super();
         this.flowTimeOut = flowTimeout;
@@ -57,13 +59,12 @@ public class FlowGenerator {
         return flowCount;
     }
 
+    public void updateTimestamp(long ts) {
+        this.currentTimestamp = ts;
+    }
+
     public boolean containsFlow(PacketInfo packet) {
         packetCounter++;
-        if (packetCounter > 0x8000) {
-            flushTimeoutFlows(packet.getTimestamp());
-            packetCounter = 0;
-        }
-
         if (this.currentFlows.containsKey(packet.fwdFlowId())) {
             packet.setFwd();
             return true;
@@ -77,6 +78,11 @@ public class FlowGenerator {
 
     public void addPacket(PacketInfo packet) {
         if (packet == null) return;
+
+        if (packetCounter > 0x4000) {
+            flushTimeoutFlows(this.currentTimestamp);
+            packetCounter = 0;
+        }
 
         logger.debug("Received packet with id {}", packet.getFlowId());
         String id = packet.getFlowId();
