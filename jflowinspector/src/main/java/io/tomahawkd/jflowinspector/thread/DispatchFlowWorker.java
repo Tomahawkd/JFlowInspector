@@ -6,7 +6,7 @@ public interface DispatchFlowWorker extends DispatchWorker {
 
     boolean containsFlow(PacketInfo info);
 
-    void accept(PacketInfo info);
+    void accept(PacketInfo info) throws InterruptedException;
 
     long getWorkload();
 

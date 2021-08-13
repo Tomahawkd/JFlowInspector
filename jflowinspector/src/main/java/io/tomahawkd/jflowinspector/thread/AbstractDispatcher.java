@@ -60,16 +60,6 @@ public abstract class AbstractDispatcher implements Dispatcher {
         }
     }
 
-    public void waitForWorker(DispatchWorker worker) {
-        while (worker.getQueueSize() > queueSize) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                logger.warn("Waiting for Worker is interrupted.");
-            }
-        }
-    }
-
     public DispatchWorker getLowestWorkloadWorker() {
         DispatchWorker worker;
         do {

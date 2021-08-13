@@ -10,13 +10,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
 
+    private boolean waiting;
+    private final Dispatcher dispatcher;
+    private final int queueSize;
+
     private final FlowGenerator flowGenerator;
     private final AtomicBoolean working;
 
     private final Deque<PacketInfo> queue;
     private final AtomicInteger queueCount;
 
-    public SimpleDispatchFlowWorker(FlowGenerator flowGenerator) {
+    public SimpleDispatchFlowWorker(Dispatcher dispatcher, int queueSize, FlowGenerator flowGenerator) {
+        this.dispatcher = dispatcher;
+        this.queueSize = queueSize;
         this.flowGenerator = flowGenerator;
         this.working = new AtomicBoolean(false);
         this.queue = new ConcurrentLinkedDeque<>();
@@ -31,11 +37,16 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     }
 
     @Override
-    public void accept(PacketInfo info) {
+    public void accept(PacketInfo info) throws InterruptedException {
         if (!this.working.get()) return;
-        queue.add(info);
         synchronized (this.queueCount) {
-            queueCount.incrementAndGet();
+            int current = queueCount.incrementAndGet();
+            if (current > this.queueSize) {
+                waiting = true;
+                dispatcher.wait();
+            }
+
+            queue.add(info);
         }
     }
 
@@ -60,17 +71,34 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     }
 
     @Override
+    public void updateTimestamp(long ts) {
+        synchronized (flowGenerator) {
+            flowGenerator.updateTimestamp(ts);
+        }
+    }
+
+    private PacketInfo getPacketFromQueue() {
+        synchronized (this.queueCount) {
+            PacketInfo info = queue.pop();
+            int current = this.queueCount.decrementAndGet();
+            if (waiting && current < this.queueSize) {
+                waiting = false;
+                dispatcher.notify();
+            }
+
+            return info;
+        }
+    }
+
+    @Override
     public void run() {
         this.working.set(true);
 
         while (true) {
             if (!queue.isEmpty()) {
+                PacketInfo info = getPacketFromQueue();
                 synchronized (this.flowGenerator) {
-                    flowGenerator.addPacket(queue.pop());
-                }
-
-                synchronized (this.queueCount) {
-                    this.queueCount.decrementAndGet();
+                    flowGenerator.addPacket(info);
                 }
             }
 
@@ -80,12 +108,9 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
         }
 
         while (!queue.isEmpty()) {
+            PacketInfo info = getPacketFromQueue();
             synchronized (this.flowGenerator) {
-                flowGenerator.addPacket(queue.pop());
-            }
-
-            synchronized (this.queueCount) {
-                this.queueCount.decrementAndGet();
+                flowGenerator.addPacket(info);
             }
         }
 
@@ -104,6 +129,9 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     @Override
     public void forceClose() {
         this.queue.clear();
+        synchronized (this.queueCount) {
+            this.queueCount.set(0);
+        }
         close();
     }
 }

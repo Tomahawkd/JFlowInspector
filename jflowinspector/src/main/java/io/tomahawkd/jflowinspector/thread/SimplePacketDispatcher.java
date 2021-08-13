@@ -12,11 +12,11 @@ public class SimplePacketDispatcher extends AbstractDispatcher implements Packet
     public SimplePacketDispatcher(int threads, int size, Supplier<FlowGenerator> generatorFactory) {
         super(threads, size);
         for (int i = 0; i < threads; i++) {
-            workers.add(new SimpleDispatchFlowWorker(generatorFactory.get()));
+            workers.add(new SimpleDispatchFlowWorker(this, size, generatorFactory.get()));
         }
     }
 
-    public void dispatch(PacketInfo info) {
+    public void dispatch(PacketInfo info) throws InterruptedException {
         if (!this.working) return;
 
         // flow is processing

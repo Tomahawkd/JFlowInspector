@@ -4,7 +4,7 @@ import io.tomahawkd.jflowinspector.packet.PacketInfo;
 
 public interface PacketDispatcher {
 
-    void dispatch(PacketInfo info);
+    void dispatch(PacketInfo info) throws InterruptedException;
 
     long getFlowCount();
 }
