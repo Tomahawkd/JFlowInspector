@@ -47,6 +47,9 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
             }
 
             queue.add(info);
+            synchronized (this) {
+                notify();
+            }
         }
     }
 
@@ -100,6 +103,14 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
                 synchronized (this.flowGenerator) {
                     flowGenerator.addPacket(info);
                 }
+            } else {
+                synchronized (this) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
             }
 
             synchronized (this.working) {
@@ -123,6 +134,10 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     public void close() {
         synchronized (this.working) {
             this.working.set(false);
+        }
+
+        synchronized (this) {
+            notify();
         }
     }
 
