@@ -4,6 +4,8 @@ public interface DispatchWorker extends Runnable {
 
     long getWorkload();
 
+    int getQueueSize();
+
     void run();
 
     void close();
