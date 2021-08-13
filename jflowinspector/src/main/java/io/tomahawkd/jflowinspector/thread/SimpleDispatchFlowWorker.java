@@ -6,6 +6,7 @@ import io.tomahawkd.jflowinspector.packet.PacketInfo;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
 
@@ -13,11 +14,13 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     private final AtomicBoolean working;
 
     private final Deque<PacketInfo> queue;
+    private final AtomicInteger queueCount;
 
     public SimpleDispatchFlowWorker(FlowGenerator flowGenerator) {
         this.flowGenerator = flowGenerator;
         this.working = new AtomicBoolean(false);
         this.queue = new ConcurrentLinkedDeque<>();
+        this.queueCount = new AtomicInteger(0);
     }
 
     @Override
@@ -31,11 +34,22 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     public void accept(PacketInfo info) {
         if (!this.working.get()) return;
         queue.add(info);
+        synchronized (this.queueCount) {
+            queueCount.incrementAndGet();
+        }
     }
 
     @Override
     public long getWorkload() {
-        return queue.size();
+        synchronized (flowGenerator) {
+            return flowGenerator.getCurrentFlowCount();
+        }
+    }
+
+    public int getQueueSize() {
+        synchronized (this.queueCount) {
+            return this.queueCount.get();
+        }
     }
 
     @Override
@@ -54,6 +68,10 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
                 synchronized (this.flowGenerator) {
                     flowGenerator.addPacket(queue.pop());
                 }
+
+                synchronized (this.queueCount) {
+                    this.queueCount.decrementAndGet();
+                }
             }
 
             synchronized (this.working) {
@@ -64,6 +82,10 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
         while (!queue.isEmpty()) {
             synchronized (this.flowGenerator) {
                 flowGenerator.addPacket(queue.pop());
+            }
+
+            synchronized (this.queueCount) {
+                this.queueCount.decrementAndGet();
             }
         }
 
