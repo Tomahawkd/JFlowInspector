@@ -16,8 +16,8 @@ public enum FlowFeatureBuilder {
 
     INSTANCE;
 
-    static Logger logger;
-    static List<Class<? extends FlowFeature>> cachedFeatureClass;
+    private static Logger logger;
+    private static List<Class<? extends FlowFeature>> cachedFeatureClass;
 
     FlowFeatureBuilder() {
         init();
