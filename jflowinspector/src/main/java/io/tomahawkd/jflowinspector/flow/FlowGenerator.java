@@ -207,6 +207,7 @@ public class FlowGenerator {
     }
 
     private void callback(Flow flow) {
+        if (!flow.isHttp()) return;
         flowCount++;
         listeners.forEach(l -> l.onFlowGenerated(flow));
     }

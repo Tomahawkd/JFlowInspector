@@ -1,6 +1,7 @@
 package io.tomahawkd.jflowinspector.flow;
 
 import io.tomahawkd.jflowinspector.flow.features.*;
+import io.tomahawkd.jflowinspector.flow.features.http.HttpFeatureAdapter;
 import io.tomahawkd.jflowinspector.label.LabelStrategy;
 import io.tomahawkd.jflowinspector.packet.PacketInfo;
 
@@ -15,6 +16,8 @@ public class Flow implements FlowFeature {
 
     private FlowStatus status;
     private int finStatus;
+
+    private boolean http = false;
 
     private Flow() {
         this.features = new ArrayList<>();
@@ -86,6 +89,7 @@ public class Flow implements FlowFeature {
         for (FlowFeature data : features) {
             data.finalizeFlow();
         }
+        http = getDep(HttpFeatureAdapter.class).getHttpPackets() > 0;
     }
 
     public long getFlowStartTime() {
@@ -187,5 +191,9 @@ public class Flow implements FlowFeature {
 
     public boolean getFinStatusAt(int mask) {
         return (finStatus & mask) == mask;
+    }
+
+    public boolean isHttp() {
+        return http;
     }
 }
