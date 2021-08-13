@@ -49,6 +49,10 @@ public class FlowGenerator {
         labelStrategy = supplier;
     }
 
+    public int getCurrentFlowCount() {
+        return currentFlows.size();
+    }
+
     public long getFlowCount() {
         return flowCount;
     }
