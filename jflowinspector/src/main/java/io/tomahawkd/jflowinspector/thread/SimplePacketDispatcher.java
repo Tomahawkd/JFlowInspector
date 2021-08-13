@@ -2,8 +2,6 @@ package io.tomahawkd.jflowinspector.thread;
 
 import io.tomahawkd.jflowinspector.flow.FlowGenerator;
 import io.tomahawkd.jflowinspector.packet.PacketInfo;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.function.Supplier;
 
