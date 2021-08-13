@@ -85,6 +85,9 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
     @Parameter(names = {"--old"}, description = "Use Jnetpcap Parser which is stable but slow.")
     private boolean useOldParser = false;
 
+    @Parameter(names = {"-F", "--fast"}, description = "Fast mode")
+    private boolean fast = false;
+
     public boolean isHelp() {
         return help;
     }
@@ -135,6 +138,10 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
 
     public boolean useOldParser() {
         return useOldParser;
+    }
+
+    public boolean fastMode() {
+        return fast;
     }
 
     @Override
@@ -240,6 +247,7 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         builder.append("Flow threads: ").append(flowThreads).append("\n");
         builder.append("Flow Queue Size: ").append(flowQueueSize).append("\n");
         builder.append("Use Old Packet Reader: ").append(useOldParser).append("\n");
+        builder.append("Fast mode: ").append(fast).append("\n");
         builder.append("Continuous File: ").append(continuous).append("\n");
         builder.append("Output one file: ").append(oneFile).append("\n");
         builder.append("Data output: ").append("\n");

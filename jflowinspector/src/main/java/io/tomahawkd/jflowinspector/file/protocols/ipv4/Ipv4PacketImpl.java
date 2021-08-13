@@ -3,6 +3,8 @@ package io.tomahawkd.jflowinspector.file.protocols.ipv4;
 import io.kaitai.struct.ByteBufferKaitaiStream;
 import io.kaitai.struct.KaitaiStream;
 import io.kaitai.struct.KaitaiStruct;
+import io.tomahawkd.config.ConfigManager;
+import io.tomahawkd.jflowinspector.config.CommandlineDelegate;
 import io.tomahawkd.jflowinspector.file.protocols.tcp.TcpSegmentImpl;
 
 public class Ipv4PacketImpl extends KaitaiStruct implements Ipv4Packet {
@@ -49,7 +51,9 @@ public class Ipv4PacketImpl extends KaitaiStruct implements Ipv4Packet {
         this.srcIpAddr = this._io.readBytes(4);
         this.dstIpAddr = this._io.readBytes(4);
         byte[] _raw_options = this._io.readBytes((ihlBytes - 20));
-        this.options = new Ipv4OptionList(new ByteBufferKaitaiStream(_raw_options), this);
+        if (!ConfigManager.get().getDelegateByType(CommandlineDelegate.class).fastMode()) {
+            this.options = new Ipv4OptionList(new ByteBufferKaitaiStream(_raw_options), this);
+        }
         byte[] _raw_body = this._io.readBytes((totalLength - ihlBytes));
         Protocol protocol = Protocol.byId(protocol());
         if (protocol == Protocol.TCP) {
