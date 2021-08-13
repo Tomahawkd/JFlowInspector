@@ -9,9 +9,7 @@ import java.util.function.Supplier;
 
 public class SimplePacketDispatcher extends AbstractDispatcher implements PacketDispatcher {
 
-    private static final Logger logger = LogManager.getLogger(SimplePacketDispatcher.class);
-
-    public SimplePacketDispatcher(int threads, long size, Supplier<FlowGenerator> generatorFactory) {
+    public SimplePacketDispatcher(int threads, int size, Supplier<FlowGenerator> generatorFactory) {
         super(threads, size);
         for (int i = 0; i < threads; i++) {
             workers.add(new SimpleDispatchFlowWorker(generatorFactory.get()));

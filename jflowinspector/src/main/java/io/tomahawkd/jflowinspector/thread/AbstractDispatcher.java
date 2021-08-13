@@ -18,9 +18,9 @@ public abstract class AbstractDispatcher implements Dispatcher {
 
     protected boolean working;
     protected final ThreadPoolExecutor executor;
-    protected final long queueSize;
+    protected final int queueSize;
 
-    protected AbstractDispatcher(int threads, long queueSize) {
+    protected AbstractDispatcher(int threads, int queueSize) {
         this.queueSize = queueSize;
         this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
         this.workers = new ArrayList<>();

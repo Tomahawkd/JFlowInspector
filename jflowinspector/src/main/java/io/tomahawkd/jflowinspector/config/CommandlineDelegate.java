@@ -80,7 +80,7 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
     private int flowThreads = 5;
 
     @Parameter(names = {"-q", "--flow_queue"}, description = "Set the queue length waiting for flow process")
-    private long flowQueueSize = 256;
+    private int flowQueueSize = 256;
 
     @Parameter(names = {"--old"}, description = "Use Jnetpcap Parser which is stable but slow.")
     private boolean useOldParser = false;
@@ -132,7 +132,7 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         return flowThreads;
     }
 
-    public long getFlowQueueSize() {
+    public int getFlowQueueSize() {
         return flowQueueSize;
     }
 
