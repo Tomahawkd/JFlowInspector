@@ -100,6 +100,7 @@ public class OfflineExecutor extends AbstractExecutor {
                 readData(dispatcher, inputFile.getFilePath());
             }
 
+            System.out.printf("File %s read complete, flushing unterminated flows.", inputFile.getFileName());
             dispatcher.stop();
 
             long waitTime = System.currentTimeMillis();
@@ -113,7 +114,6 @@ public class OfflineExecutor extends AbstractExecutor {
             System.out.printf("%s is done. total %d flows %n", inputFile.getFileName(), dispatcher.getFlowCount());
             System.out.println(Utils.DividingLine);
         } catch (Exception e) {
-            dispatcher.stop();
             dispatcher.forceStop();
             throw e;
         } finally {
