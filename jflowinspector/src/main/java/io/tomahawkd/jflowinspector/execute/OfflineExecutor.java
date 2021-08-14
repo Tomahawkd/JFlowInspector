@@ -149,6 +149,8 @@ public class OfflineExecutor extends AbstractExecutor {
             }
         }
 
+        // clear line
+        System.out.println();
         System.out.printf("Packet stats: Total=%d,Valid=%d,Discarded=%d%n", nTotal, nValid, nInvalid);
     }
 
