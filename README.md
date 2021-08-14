@@ -23,13 +23,17 @@ CICFlowMeter and CICFlowMeter Mk.6.
 2. jnetpcap native library and use `-Djava.library.path` to link native library with jar (you can find
    it in `./lib/jnetpcap` or download it from [original project](https://sourceforge.net/projects/jnetpcap/)).
 
-Note:
-Highly recommended allocating JFlowInspector with larger memory using `-Xmx` if you are about to
-processing large number of network flows.
-My configuration is allocating 4G of the memory (`-Xmx4G`)
-
 ## Build
 Clone the code and its submodule and use maven to create jar.
+
+```shell
+# initialize submodule
+git submodule init
+git submodule update
+
+# compile via maven, find jar in ./bin
+mvn package
+```
 
 Note: 
 1. The repo is only tested on Windows platform.
@@ -41,6 +45,68 @@ Note:
 Since this project is still at early development, and it is still under my 
 graduate project, internal structure, behaviour may vary and limit 
 in different version.
+
+## Flow Analysis Warning
+For TCP flows, the JFlowInspector allocate a Flow Object for analysis.
+The flow would be terminated by FIN, RST and `--flow_time` which stands
+for flow timeout. Therefore, if the network traffic contains too many
+flows at the same time, you need to allocate sufficient memory to 
+JFlowInspector via `-Xmx` to accept the flow, otherwise you will 
+receive `OutOfMemoryException` by JVM.
+
+A classical example to this is DoS/DDoS. The JFlowInspector initializes
+resources to these flows, so actually the network traffic is attacking
+JFlowInspector.
+
+### Commandline Option Solutions
+To reduce the size of memory JFlowInspector is using, there are several
+commandline options:
+
+**Mode**
+
+**Commandline**: `-m <mode>` or `--mode <mode>`  
+**Description**:   
+Currently JFlowInspector has two modes to analyse flows,
+`FULL` and `SAMPLING`.   
+Mode `FULL` interprets **Flow timeout** as the 
+maximum interval of two packets in a flow, if the flow receives no 
+packets in **Flow timeout**, the flow is terminated. The flow has **no
+maximum interval** which is different from Mode `SAMPLING`.  
+Mode `SAMPLING` interprets **Flow timeout** as the maximum interval 
+of a flow. It limits the maximum time a flow exists. This mode would
+consume **less** memory.  
+Mode `DEFAULT` and mode `ONLINE` will use mode `FULL` to analyse the 
+flow.
+
+
+**Flow timeout**
+
+**Commandline**: `-f <timeout>` or `--flow_time <timeout>`  
+**Description**:   
+The `timeout` defines the maximum interval of two packets in a flow (
+Mode `ONLINE`) or the maximum interval of flow (Mode `SAMPLING`).
+
+**Flow threads**
+
+**Commandline**: `-t <threads num>` or `-flow_thread <threads num>`  
+**Description**:   
+The flow threads is holding `FlowGenerator` which manages flow creation
+and flow termination and stores Flow Objects. More threads could 
+accelerate the flow analysis but stores more Flow Objects in memory.
+Lower threads may slow down the analysis but **consumes less memory**.  
+**Note**: Though more threads could accelerate the flow analysis, 
+it is still limited by the rate of the packet parsing which is running
+on a single (main) thread.
+
+**Flow queue**
+
+**Commandline**: `-q <queue size>` or `--flow_queue <queue size>`  
+**Description**:  
+The flow queue is a buffer to store unconsumed parsed packet.
+Typically, it is used to balance the rate of the packet parsing and 
+the rate of the flow analysis. It would block the packet parsing 
+if the queue is full. The queue is stored in thread workers, so 
+the overall queue length is `Queue_Size * Thread_Count`.
 
 ## Commandline Help
 ```
