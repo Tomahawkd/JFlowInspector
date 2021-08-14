@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
 
-    private boolean waiting;
     private final Dispatcher dispatcher;
     private final int queueSize;
 
@@ -39,17 +38,21 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     @Override
     public void accept(PacketInfo info) throws InterruptedException {
         if (!this.working.get()) return;
+
+        boolean shouldWait;
         synchronized (this.queueCount) {
-            int current = queueCount.incrementAndGet();
-            if (current > this.queueSize) {
-                waiting = true;
+            shouldWait = queueCount.incrementAndGet() > this.queueSize;
+        }
+
+        if (shouldWait) {
+            synchronized (dispatcher) {
                 dispatcher.wait();
             }
+        }
 
-            queue.add(info);
-            synchronized (this) {
-                notify();
-            }
+        queue.add(info);
+        synchronized (this) {
+            notify();
         }
     }
 
@@ -81,16 +84,18 @@ public class SimpleDispatchFlowWorker implements DispatchFlowWorker {
     }
 
     private PacketInfo getPacketFromQueue() {
+        boolean shouldNotify;
         synchronized (this.queueCount) {
-            PacketInfo info = queue.pop();
-            int current = this.queueCount.decrementAndGet();
-            if (waiting && current < this.queueSize) {
-                waiting = false;
+            shouldNotify = this.queueCount.decrementAndGet() < this.queueSize;
+        }
+
+        if (shouldNotify) {
+            synchronized (dispatcher) {
                 dispatcher.notify();
             }
-
-            return info;
         }
+
+        return queue.pop();
     }
 
     @Override
