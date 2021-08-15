@@ -226,6 +226,13 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         // threads
         if (flowThreads < 1) flowThreads = 1;
         if (flowQueueSize < 0) flowQueueSize = 256;
+
+        // Ignoring http features could cause IllegalArgumentException
+        // due to the missing of the http packet count which is held
+        // by the HttpFeatureAdapter.
+        // Here we temporarily ignores the list until we deal with
+        // this problem.
+        this.ignoreList.clear();
     }
 
     private String generateOutputFileName(LocalFile input, boolean oneFile) {
