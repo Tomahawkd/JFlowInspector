@@ -1,3 +1,11 @@
+### Version 0.7.4
+
+- Add a note related to memory issues
+- Add message when the file reading is complete
+- Disable Ignore List temporarily since it could cause a missing dependency of flow feature compononts
+- Fix non-terminated flows do not receive flow finalization after all packets are parsed and analysed
+- Fix the worker do not acquire the lock of the dispatcher while calling wait and notify
+
 ### Version 0.7.3
 
 - Add a temporary option that ignores IP and TCP options field for faster parsing
