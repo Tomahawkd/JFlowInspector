@@ -40,12 +40,6 @@ git submodule update
 mvn package
 ```
 
-Note: 
-1. The repo is only tested on Windows platform.
-2. The native library is acquired from the original CICFlowMeter repo.
-3. For more information about jnetpcap, please follow the [link](https://sourceforge.net/projects/jnetpcap/).
-4. The tool will generate tons of logs while running, use `--quiet` to stop this.
-
 ## Developing Note
 Since this project is still at early development, and it is still under my 
 graduate project, internal structure, behaviour may vary and limit 
@@ -112,6 +106,14 @@ Typically, it is used to balance the rate of the packet parsing and
 the rate of the flow analysis. It would block the packet parsing 
 if the queue is full. The queue is stored in thread workers, so 
 the overall queue length is `Queue_Size * Thread_Count`.
+
+## About JnetPcap Parser Plugin
+
+The native library of Jnetpcap is acquired from the original 
+[CICFlowMeter](https://github.com/ahlashkari/CICFlowMeter) repo.
+For more information about jnetpcap, please follow the [link](https://sourceforge.net/projects/jnetpcap/).
+
+The plugin Jnetpcap and associated native library is only tested on Windows platform.
 
 ## Commandline Help
 ```
