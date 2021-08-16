@@ -23,7 +23,7 @@
         <dependency>
             <groupId>io.tomahawkd</groupId>
             <artifactId>jflowinspector-api</artifactId>
-            <version>0.7.4</version>
+            <version>${inspector.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
