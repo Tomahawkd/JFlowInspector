@@ -1,3 +1,8 @@
+### Version 0.7.5
+
+- Add Pcap File Reader Plugin Jnetpcap and corresponding API
+- Fix the packet status output is overlapping from each other
+
 ### Version 0.7.4
 
 - Add a note related to memory issues
