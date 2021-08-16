@@ -114,6 +114,7 @@ public class OfflineExecutor extends AbstractExecutor {
             System.out.printf("%s is done. total %d flows %n", inputFile.getFileName(), dispatcher.getFlowCount());
             System.out.println(Utils.DividingLine);
         } catch (Exception e) {
+            System.out.println();
             dispatcher.forceStop();
             throw e;
         } finally {
