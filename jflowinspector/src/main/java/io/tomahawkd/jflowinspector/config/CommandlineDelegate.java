@@ -85,6 +85,10 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
     @Parameter(names = {"--old"}, description = "Use Jnetpcap Parser which is stable but slow.")
     private boolean useOldParser = false;
 
+    @Parameter(names = {"--old_path"}, description = "Load Jnetpcap Parser plugin when requested via \"--old\".")
+    private String oldParserPath = "";
+    private Path oldParserJarPath = null;
+
     @Parameter(names = {"-F", "--fast"}, description = "Fast mode")
     private boolean fast = false;
 
@@ -138,6 +142,10 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
 
     public boolean useOldParser() {
         return useOldParser;
+    }
+
+    public Path getOldParserPath() {
+        return oldParserJarPath;
     }
 
     public boolean fastMode() {
@@ -233,6 +241,15 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         // Here we temporarily ignores the list until we deal with
         // this problem.
         this.ignoreList.clear();
+
+        if (useOldParser) {
+            Path p = Paths.get(oldParserPath);
+            if (Files.exists(p) && Files.isRegularFile(p) && p.getFileName().toString().endsWith(".jar")) {
+                this.oldParserJarPath = p;
+            } else {
+                throw new ParameterException("Path " + p.toAbsolutePath().toString() + " is not a valid jar file.");
+            }
+        }
     }
 
     private String generateOutputFileName(LocalFile input, boolean oneFile) {
