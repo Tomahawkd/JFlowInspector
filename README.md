@@ -19,9 +19,14 @@ project is migrate to a new repository, which here is the place for the new gene
 CICFlowMeter and CICFlowMeter Mk.6.
 
 ## Prerequisite
-1. Java 8
-2. jnetpcap native library and use `-Djava.library.path` to link native library with jar (you can find
+Java 8
+
+(Optional) jnetpcap native library and use `-Djava.library.path` to link native library with jar (you can find
    it in `./lib/jnetpcap` or download it from [original project](https://sourceforge.net/projects/jnetpcap/)).
+
+From v0.7.5, the Jnetpcap Packet parser is moved to the plugin, so you could ignore 
+the optional jnetpcap library, **unless** you are using it via commandline `--old`
+and `--old_path` which requests JFlowInspector to use Jnetpcap Packet parser.
 
 ## Build
 Clone the code and its submodule and use maven to create jar.
@@ -145,6 +150,9 @@ Usage: <main class> [options] Pcap file or directory.
     --old
       Use Jnetpcap Parser which is stable but slow.
       Default: false
+    --old_path
+      Load Jnetpcap Parser plugin when requested via "--old".
+      Default: <empty string>
     -1, --one_file
       Output only one file.
       Default: false
