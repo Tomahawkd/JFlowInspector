@@ -1,5 +1,6 @@
 package io.tomahawkd.jflowinspector.packet;
 
+import io.tomahawkd.jflowinspector.extension.ExtensionManager;
 import io.tomahawkd.jflowinspector.file.PcapFileReaderProvider;
 import io.tomahawkd.jflowinspector.file.PcapFileReader;
 import io.tomahawkd.jflowinspector.file.PcapPacket;
@@ -37,7 +38,7 @@ public class PcapReader {
     public PcapReader(Path file) {
         logger.debug("Read file {} with reader.", file);
         try {
-            pcapReader = PcapFileReaderProvider.INSTANCE.newReader(file);
+            pcapReader = ExtensionManager.INSTANCE.get(PcapFileReaderProvider.class).newReader(file);
         } catch (IOException e) {
             logger.error("Read pcap file error.", e);
             throw new RuntimeException("Read pcap file error", e);
