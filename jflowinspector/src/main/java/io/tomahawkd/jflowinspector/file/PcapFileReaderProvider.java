@@ -1,58 +1,65 @@
 package io.tomahawkd.jflowinspector.file;
 
 import io.tomahawkd.config.ConfigManager;
-import io.tomahawkd.config.util.ClassManager;
 import io.tomahawkd.jflowinspector.config.CommandlineDelegate;
+import io.tomahawkd.jflowinspector.extension.ExtensionPoint;
+import io.tomahawkd.jflowinspector.extension.ParameterizedExtensionHandler;
+import io.tomahawkd.jflowinspector.extension.ParameterizedExtensionPoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-public enum PcapFileReaderProvider {
+public class PcapFileReaderProvider implements ParameterizedExtensionHandler {
 
-    INSTANCE;
+    private static final Logger logger = LogManager.getLogger(PcapFileReaderProvider.class);
+    private Class<? extends PcapFileReader> readerClass;
 
-    private static Logger logger;
-
-    PcapFileReaderProvider() {
-        init();
-    }
-
-    private void init() {
-        logger = LogManager.getLogger(PcapFileReaderProvider.class);
+    public PcapFileReaderProvider() {
     }
 
     public PcapFileReader newReader(Path file) throws IOException {
-        CommandlineDelegate delegate = ConfigManager.get().getDelegateByType(CommandlineDelegate.class);
-        if (delegate != null && delegate.useOldParser()) {
-            Path jarPath = delegate.getOldParserPath();
-            URL url = new URL("file:" + jarPath.toAbsolutePath());
 
-            List<ClassLoader> list = new ArrayList<>();
-            list.add(new URLClassLoader(new URL[]{url}));
-            Set<Class<? extends PcapFileReader>> classes =
-                    ClassManager.createManager(list)
-                            .loadClasses(PcapFileReader.class, "io.tomahawkd.jflowinspector.file.jnetpcap");
+        if (readerClass == null) {
+            logger.error("File Reader is not found, fall back to bundled reader.");
+            return new BundledPcapFileReader(file);
+        }
 
-            if (classes.isEmpty()) {
-                logger.error("Jnetpcap File Reader is not found, fall back to bundled readers.");
-            } else {
-                Class<? extends PcapFileReader> reader = classes.stream().findFirst().get();
-                try {
-                    return reader.getConstructor(Path.class).newInstance(file);
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    logger.error("Jnetpcap File Reader creation failed, fall back to bundled readers.");
-                }
-            }
+        try {
+            Constructor<? extends PcapFileReader> c = readerClass.getConstructor(Path.class);
+            c.setAccessible(true);
+            return c.newInstance(file);
+        } catch (NoSuchMethodException | InstantiationException |
+                IllegalAccessException | InvocationTargetException e) {
+            logger.error("Jnetpcap File Reader creation failed, fall back to bundled reader.");
         }
 
         return new BundledPcapFileReader(file);
+    }
+
+    @Override
+    public boolean canAccept(Class<? extends ExtensionPoint> clazz) {
+        return PcapFileReader.class.isAssignableFrom(clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean accept(Class<? extends ParameterizedExtensionPoint> extension) {
+        Reader reader = extension.getAnnotation(Reader.class);
+        if (reader == null) {
+            logger.warn("Reader annotation not found in class {}", extension);
+            return false;
+        }
+
+        String name = reader.name();
+        if (name.equalsIgnoreCase(ConfigManager.get().getDelegateByType(CommandlineDelegate.class).getParser())) {
+            this.readerClass = (Class<? extends PcapFileReader>) extension;
+        }
+
+        // just accept the unused class but ignore it
+        return true;
     }
 }
