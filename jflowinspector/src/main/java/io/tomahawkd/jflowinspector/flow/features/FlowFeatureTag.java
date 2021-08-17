@@ -86,7 +86,7 @@ public enum FlowFeatureTag {
     idl_max("Idle Max"),                    //83
     idl_min("Idle Min"),                    //84
 
-    // HTTP layer features: 68
+    // HTTP layer features: 69
     // HttpBasicFeature: 32
     request_packet_count("Request Packet Count"),
     invalid_request_header_count("Invalid Request Header Count"),
@@ -127,7 +127,7 @@ public enum FlowFeatureTag {
     referer_from_same_source("Referer Same Source Count"),
     referer_from_search_engine("Referer Search Engine Count"),
 
-    // HttpAcceptFeature: 6
+    // HttpAcceptFeature: 7
     accept_count("Accept Header Count"),
     accept_use_wildcard_count("Accept Any Count"),
     no_accept_count("No Accept Header Count"),
