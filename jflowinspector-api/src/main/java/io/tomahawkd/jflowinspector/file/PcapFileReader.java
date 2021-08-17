@@ -1,6 +1,8 @@
 package io.tomahawkd.jflowinspector.file;
 
-public interface PcapFileReader {
+import io.tomahawkd.jflowinspector.extension.ParameterizedExtensionPoint;
+
+public interface PcapFileReader extends ParameterizedExtensionPoint {
 
     boolean hasNext();
 
