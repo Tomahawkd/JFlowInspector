@@ -128,6 +128,9 @@ Usage: <main class> [options] Pcap file or directory.
     --debug
       Show debug output (sets logLevel to DEBUG)
       Default: false
+    --extension
+      manually set extensions' directory
+      Default: extension
     -q, --flow_queue
       Set the queue length waiting for flow process
       Default: 256
@@ -142,24 +145,24 @@ Usage: <main class> [options] Pcap file or directory.
     -m, --mode
       Mode selection.
       Default: DEFAULT
-      Possible Values: [DEFAULT, SAMPLING, FULL, ONLINE]
+      Possible Values: [DEFAULT, SAMPLING, FULL, ONLINE, DIAGNOSIS]
     -n, --no
       Ignores specific feature (use as -no <feature1>,<feature2>)
       Default: []
     --noassemble
       Disable TCP Reassembing
       Default: false
-    --old
-      Use Jnetpcap Parser which is stable but slow.
-      Default: false
-    --old_path
-      Load Jnetpcap Parser plugin when requested via "--old".
-      Default: <empty string>
     -1, --one_file
       Output only one file.
       Default: false
+    -p, --parser
+      Declare the packet parser to parse pcap/pcapng files
+      Default: bundled
     --quiet
       No output (sets logLevel to NONE)
+      Default: false
+    --safe
+      Ignore all extensions.
       Default: false
   * -o, -output
       Output directory.
