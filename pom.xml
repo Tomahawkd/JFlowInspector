@@ -7,10 +7,10 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <inspector.version>0.7.5</inspector.version>
+        <inspector.version>0.8.0</inspector.version>
         <bin.directory>bin</bin.directory>
         <api.directory>${bin.directory}/api</api.directory>
-        <plugin.directory>${bin.directory}/plugin</plugin.directory>
+        <plugin.directory>${bin.directory}/extension</plugin.directory>
     </properties>
 
     <groupId>io.tomahawkd</groupId>

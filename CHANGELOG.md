@@ -1,3 +1,11 @@
+### Version 0.8.0
+
+- Add extension manager for JFlowInspector
+- Support extension for packet parsing
+- Add http feature to check Accept-Language subtag
+- Add diagnosis mode for packet parsing
+- Fix output overlapping
+
 ### Version 0.7.5
 
 - Add Pcap File Reader Plugin Jnetpcap and corresponding API
