@@ -28,6 +28,11 @@ From v0.7.5, the Jnetpcap Packet parser is moved to the plugin, so you could ign
 the optional jnetpcap library, **unless** you are using it via commandline `--old`
 and `--old_path` which requests JFlowInspector to use Jnetpcap Packet parser.
 
+From v0.8.0, after we import the extension manager from [TLS-Tester](https://github.com/Tomahawkd/TLS-Tester),
+`--old` and `--old_path` has been removed, instead, you could use `--extension` to tell the extension
+directory and `-p` or `--parser` to tell which parser to use (`bundled` for default, `jnetpcap` for Jnetpcap Packet
+parser).
+
 ## Build
 Clone the code and its submodule and use maven to create jar.
 
