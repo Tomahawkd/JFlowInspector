@@ -6,6 +6,7 @@ import io.tomahawkd.jflowinspector.file.pcapng.Pcapng;
 import java.io.IOException;
 import java.nio.file.Path;
 
+@Reader(name = DefaultPcapFileReaderName.DEFAULT)
 public class BundledPcapFileReader extends AbstractPcapFileReader {
 
     private final PcapFileReader reader;

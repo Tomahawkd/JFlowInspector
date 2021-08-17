@@ -1,6 +1,8 @@
 package io.tomahawkd.jflowinspector.file.jnetpcap;
 
 import io.tomahawkd.jflowinspector.file.AbstractPcapFileReader;
+import io.tomahawkd.jflowinspector.file.DefaultPcapFileReaderName;
+import io.tomahawkd.jflowinspector.file.Reader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jnetpcap.Pcap;
@@ -12,6 +14,7 @@ import org.jnetpcap.packet.PcapPacket;
 
 import java.nio.file.Path;
 
+@Reader(name = DefaultPcapFileReaderName.JNETPCAP)
 public class JnetpcapReader extends AbstractPcapFileReader {
 
     private static final Logger logger = LogManager.getLogger(JnetpcapReader.class);
