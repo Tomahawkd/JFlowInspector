@@ -8,6 +8,7 @@ import io.tomahawkd.config.util.ClassManager;
 import io.tomahawkd.jflowinspector.config.CommandlineDelegate;
 import io.tomahawkd.jflowinspector.execute.Executor;
 import io.tomahawkd.jflowinspector.execute.WithMode;
+import io.tomahawkd.jflowinspector.extension.ExtensionManager;
 import io.tomahawkd.jflowinspector.util.Utils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,9 @@ public class Main {
         logger.debug("Commandline parse complete.");
         logger.debug(delegate.debugString());
         System.out.println(delegate.debugString());
+
+        ExtensionManager.INSTANCE.loadComponents();
+        System.out.println("Extension load complete.");
         System.out.println(Utils.DividingLine);
 
 
