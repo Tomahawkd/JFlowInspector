@@ -7,6 +7,7 @@ import io.tomahawkd.config.annotation.BelongsTo;
 import io.tomahawkd.config.annotation.HiddenField;
 import io.tomahawkd.config.commandline.CommandlineConfig;
 import io.tomahawkd.jflowinspector.execute.ExecutionMode;
+import io.tomahawkd.jflowinspector.file.DefaultPcapFileReaderName;
 import io.tomahawkd.jflowinspector.file.PcapFileHelper;
 import io.tomahawkd.jflowinspector.source.LocalFile;
 import io.tomahawkd.jflowinspector.source.LocalMultiFile;
@@ -82,12 +83,8 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
     @Parameter(names = {"-q", "--flow_queue"}, description = "Set the queue length waiting for flow process")
     private int flowQueueSize = 256;
 
-    @Parameter(names = {"--old"}, description = "Use Jnetpcap Parser which is stable but slow.")
-    private boolean useOldParser = false;
-
-    @Parameter(names = {"--old_path"}, description = "Load Jnetpcap Parser plugin when requested via \"--old\".")
-    private String oldParserPath = "";
-    private Path oldParserJarPath = null;
+    @Parameter(names = {"-p", "--parser"}, description = "Declare the packet parser to parse pcap/pcapng files")
+    private String parser = DefaultPcapFileReaderName.DEFAULT;
 
     @Parameter(names = {"-F", "--fast"}, description = "Fast mode")
     private boolean fast = false;
@@ -140,12 +137,8 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         return flowQueueSize;
     }
 
-    public boolean useOldParser() {
-        return useOldParser;
-    }
-
-    public Path getOldParserPath() {
-        return oldParserJarPath;
+    public String getParser() {
+        return parser;
     }
 
     public boolean fastMode() {
@@ -241,15 +234,6 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         // Here we temporarily ignores the list until we deal with
         // this problem.
         this.ignoreList.clear();
-
-        if (useOldParser) {
-            Path p = Paths.get(oldParserPath);
-            if (Files.exists(p) && Files.isRegularFile(p) && p.getFileName().toString().endsWith(".jar")) {
-                this.oldParserJarPath = p;
-            } else {
-                throw new ParameterException("Path " + p.toAbsolutePath().toString() + " is not a valid jar file.");
-            }
-        }
     }
 
     private String generateOutputFileName(LocalFile input, boolean oneFile) {
@@ -270,7 +254,7 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
         builder.append("Disable TCP Reassembling: ").append(disableReassemble).append("\n");
         builder.append("Flow threads: ").append(flowThreads).append("\n");
         builder.append("Flow Queue Size: ").append(flowQueueSize).append("\n");
-        builder.append("Use Old Packet Reader: ").append(useOldParser).append("\n");
+        builder.append("Using Packet Reader: ").append(parser).append("\n");
         builder.append("Fast mode: ").append(fast).append("\n");
         builder.append("Continuous File: ").append(continuous).append("\n");
         builder.append("Output one file: ").append(oneFile).append("\n");
