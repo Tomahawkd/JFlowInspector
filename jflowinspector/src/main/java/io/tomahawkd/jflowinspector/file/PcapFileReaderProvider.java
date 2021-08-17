@@ -3,8 +3,6 @@ package io.tomahawkd.jflowinspector.file;
 import io.tomahawkd.config.ConfigManager;
 import io.tomahawkd.config.util.ClassManager;
 import io.tomahawkd.jflowinspector.config.CommandlineDelegate;
-import io.tomahawkd.jflowinspector.file.pcap.Pcap;
-import io.tomahawkd.jflowinspector.file.pcapng.Pcapng;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,20 +27,6 @@ public enum PcapFileReaderProvider {
 
     private void init() {
         logger = LogManager.getLogger(PcapFileReaderProvider.class);
-    }
-
-    private PcapMagicNumber getMagicNumberFromFile(Path file) throws IOException {
-        FileChannel fc = FileChannel.open(file, StandardOpenOption.READ);
-        byte[] magicNumber = new byte[4];
-        fc.read(ByteBuffer.wrap(magicNumber));
-        fc.close();
-
-        return PcapMagicNumber.getTypeBySignature(magicNumber);
-    }
-
-    public boolean isPcapFile(Path file) throws IOException {
-        PcapMagicNumber sign = getMagicNumberFromFile(file);
-        return sign == PcapMagicNumber.PCAP || sign == PcapMagicNumber.PCAPNG;
     }
 
     public PcapFileReader newReader(Path file) throws IOException {
@@ -72,12 +53,6 @@ public enum PcapFileReaderProvider {
             }
         }
 
-        switch (getMagicNumberFromFile(file)) {
-            case PCAP: return Pcap.fromFile(file);
-            case PCAPNG: return Pcapng.fromFile(file);
-        }
-
-        // Unknown
-        throw new IllegalArgumentException("The file is not a PCAP file or PCAPNG file");
+        return new BundledPcapFileReader(file);
     }
 }

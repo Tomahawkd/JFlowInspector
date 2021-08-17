@@ -2,16 +2,16 @@ package io.tomahawkd.jflowinspector.config;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import io.tomahawkd.jflowinspector.execute.ExecutionMode;
-import io.tomahawkd.jflowinspector.file.PcapFileReaderProvider;
-import io.tomahawkd.jflowinspector.source.LocalFile;
-import io.tomahawkd.jflowinspector.source.LocalMultiFile;
-import io.tomahawkd.jflowinspector.source.LocalSingleFile;
-import io.tomahawkd.jflowinspector.util.Utils;
 import io.tomahawkd.config.AbstractConfigDelegate;
 import io.tomahawkd.config.annotation.BelongsTo;
 import io.tomahawkd.config.annotation.HiddenField;
 import io.tomahawkd.config.commandline.CommandlineConfig;
+import io.tomahawkd.jflowinspector.execute.ExecutionMode;
+import io.tomahawkd.jflowinspector.file.PcapFileHelper;
+import io.tomahawkd.jflowinspector.source.LocalFile;
+import io.tomahawkd.jflowinspector.source.LocalMultiFile;
+import io.tomahawkd.jflowinspector.source.LocalSingleFile;
+import io.tomahawkd.jflowinspector.util.Utils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
@@ -180,7 +180,7 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
                     List<Path> inputFiles = entries.filter(Files::isRegularFile)
                             .filter(fl -> {
                                 try {
-                                    return PcapFileReaderProvider.INSTANCE.isPcapFile(fl);
+                                    return PcapFileHelper.isPcapFile(fl);
                                 } catch (IOException e) {
                                     return false;
                                 }
@@ -209,7 +209,7 @@ public class CommandlineDelegate extends AbstractConfigDelegate {
             } else if (Files.isRegularFile(p)) {
                 boolean isPcap = false;
                 try {
-                    isPcap = PcapFileReaderProvider.INSTANCE.isPcapFile(p);
+                    isPcap = PcapFileHelper.isPcapFile(p);
                 } catch (IOException ignored) {
                 }
                 if (isPcap) {
