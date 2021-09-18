@@ -120,6 +120,14 @@ For more information about jnetpcap, please follow the [link](https://sourceforg
 
 The plugin Jnetpcap and associated native library is only tested on Windows platform.
 
+## JFlowInspector Workflow
+
+### Overview
+![workflow](./resources/workflow.png)
+
+### Flow Status
+![flowstatus](./resources/flowstatus.png)
+
 ## Commandline Help
 ```
 Usage: <main class> [options] Pcap file or directory.
