@@ -131,6 +131,7 @@ public class FlowGenerator {
 
             } else if (flowStatus == FlowStatus.NEW) {
                 logger.warn("Initialized flow {} without SYN flag.", flow.getFlowId());
+                flow.setStatus(FlowStatus.ESTABLISHED);
 
             } else if (flowStatus == FlowStatus.SYNC_SENT) {
                 flow.setStatus(FlowStatus.ESTABLISHED);
